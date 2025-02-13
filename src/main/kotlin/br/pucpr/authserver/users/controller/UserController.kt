@@ -25,9 +25,7 @@ class UserController(
 
     @GetMapping
     fun findAll(@RequestParam dir: String = "ASC", @RequestParam role: String?): ResponseEntity<List<UserResponse>> {
-        val sortDir = SortDir.findOrNull(dir)
-        if (sortDir == null)
-            return ResponseEntity.badRequest().build()
+        val sortDir = SortDir.findOrNull(dir) ?: return ResponseEntity.badRequest().build()
 
         return userService.findAll(sortDir, role)
             .map { UserResponse(it) }
