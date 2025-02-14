@@ -1,13 +1,12 @@
-package br.pucpr.authserver.roles
+package br.pucpr.authserver.levels
 
 import br.pucpr.authserver.rolesLevels.RoleLevel
 import jakarta.persistence.*
-import org.intellij.lang.annotations.Pattern
 
 @Entity
-class Role (
-    @Id
-    @Pattern("^[A-Z][A-Z0-9]+$")
+class Level (
+    @Id @GeneratedValue
+    var id: Long? = null,
     val name: String,
     val description: String,
 )

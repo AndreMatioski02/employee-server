@@ -1,4 +1,4 @@
-package br.pucpr.authserver.roles
+package br.pucpr.authserver.levels
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/roles")
-class RoleController(val roleService: RoleService) {
+@RequestMapping("/levels")
+class LevelController(val levelService: LevelService) {
     @PostMapping
-    fun insert(@RequestBody role: Role) = roleService.save(role).let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
+    fun insert(@RequestBody level: Level) = levelService.save(level).let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
 
     @GetMapping
-    fun findAll(): List<Role> = roleService.findAll()
+    fun findAll(): List<Level> = levelService.findAll()
 }

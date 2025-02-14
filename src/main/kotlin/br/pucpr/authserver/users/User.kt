@@ -1,14 +1,7 @@
 package br.pucpr.authserver.users
 
 import br.pucpr.authserver.roles.Role
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
 @Entity
@@ -32,6 +25,6 @@ class User(
         joinColumns = [JoinColumn(name = "idUser")],
         inverseJoinColumns = [JoinColumn(name="idRole")]
     )
-    val roles: MutableSet<Role> = mutableSetOf()
+    val roles: MutableSet<Role> = mutableSetOf(),
 )
 
