@@ -1,4 +1,4 @@
-package br.pucpr.authserver.rolesLevels
+package br.pucpr.authserver.roleLevels
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

@@ -1,4 +1,4 @@
-package br.pucpr.authserver.rolesLevels
+package br.pucpr.authserver.roleLevels
 
 import br.pucpr.authserver.roles.Role
 import br.pucpr.authserver.levels.Level

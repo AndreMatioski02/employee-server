@@ -5,8 +5,8 @@ import br.pucpr.authserver.levels.Level
 import br.pucpr.authserver.levels.LevelRepository
 import br.pucpr.authserver.roles.Role
 import br.pucpr.authserver.roles.RoleRepository
-import br.pucpr.authserver.rolesLevels.RoleLevel
-import br.pucpr.authserver.rolesLevels.RoleLevelRepository
+import br.pucpr.authserver.roleLevels.RoleLevel
+import br.pucpr.authserver.roleLevels.RoleLevelRepository
 import br.pucpr.authserver.employee.EmployeeRepository
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
@@ -48,7 +48,7 @@ class Bootstrapper(
             roleLevelRepository.save(roleLevel)
         }
 
-        if(employeeRepository.findByRoleLevel(2).isEmpty()) {
+        if(employeeRepository.findByRoleLevel(1).isEmpty()) {
             val admin = Employee(
                 email="andre@email.com",
                 password = "admin",

@@ -1,6 +1,6 @@
 package br.pucpr.authserver.employee
 
-import br.pucpr.authserver.rolesLevels.RoleLevel
+import br.pucpr.authserver.roleLevels.RoleLevel
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
@@ -18,7 +18,7 @@ class Employee(
     @Column(unique = true, nullable = false)
     var email: String,
 
-    @OneToOne
+    @ManyToOne
     var roleLevel: RoleLevel? = null
 )
 

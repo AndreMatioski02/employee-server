@@ -1,4 +1,4 @@
-package br.pucpr.authserver.rolesLevels
+package br.pucpr.authserver.roleLevels
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

@@ -2,8 +2,8 @@ package br.pucpr.authserver.roles
 
 import br.pucpr.authserver.exception.NotFoundException
 import br.pucpr.authserver.levels.LevelService
-import br.pucpr.authserver.rolesLevels.RoleLevel
-import br.pucpr.authserver.rolesLevels.RoleLevelService
+import br.pucpr.authserver.roleLevels.RoleLevel
+import br.pucpr.authserver.roleLevels.RoleLevelService
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
