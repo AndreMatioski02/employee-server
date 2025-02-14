@@ -1,6 +1,5 @@
 package br.pucpr.authserver.levels
 
-import br.pucpr.authserver.users.User
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

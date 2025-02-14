@@ -1,13 +1,11 @@
-package br.pucpr.authserver.users
+package br.pucpr.authserver.employee
 
-import br.pucpr.authserver.roles.Role
 import br.pucpr.authserver.rolesLevels.RoleLevel
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
 @Entity
-@Table(name = "tblUsers")
-class User(
+class Employee(
     @Id @GeneratedValue
     var id: Long? = null,
 

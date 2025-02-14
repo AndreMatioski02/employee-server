@@ -1,12 +1,11 @@
-package br.pucpr.authserver.users.controller.requests
+package br.pucpr.authserver.employee.controller.requests
 
-import br.pucpr.authserver.rolesLevels.RoleLevel
-import br.pucpr.authserver.users.User
+import br.pucpr.authserver.employee.Employee
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class CreateUserRequest(
+data class CreateEmployeeRequest(
     @field:Email
     @field:NotNull
     val email: String?,
@@ -17,7 +16,7 @@ data class CreateUserRequest(
     @field:NotBlank
     val name: String,
 ) {
-    fun toUser() = User(
+    fun toUser() = Employee(
         email = email!!, password = password, name = name
     )
 }

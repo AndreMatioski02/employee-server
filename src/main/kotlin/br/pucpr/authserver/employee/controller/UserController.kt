@@ -1,48 +1,48 @@
-package br.pucpr.authserver.users.controller
+package br.pucpr.authserver.employee.controller
 
-import br.pucpr.authserver.users.SortDir
-import br.pucpr.authserver.users.UserService
-import br.pucpr.authserver.users.controller.requests.CreateUserRequest
-import br.pucpr.authserver.users.controller.responses.UserResponse
+import br.pucpr.authserver.employee.SortDir
+import br.pucpr.authserver.employee.EmployeeService
+import br.pucpr.authserver.employee.controller.requests.CreateEmployeeRequest
+import br.pucpr.authserver.employee.controller.responses.EmployeeResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/employee")
 class UserController(
-    val userService: UserService
+    val employeeService: EmployeeService
 ) {
     @PostMapping
-    fun insert(@RequestBody @Valid user: CreateUserRequest) =
-        userService.insert(user.toUser())
-            .let { UserResponse(it) }
+    fun insert(@RequestBody @Valid user: CreateEmployeeRequest) =
+        employeeService.insert(user.toUser())
+            .let { EmployeeResponse(it) }
             .let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
 
     @GetMapping
-    fun findAll(@RequestParam dir: String = "ASC", @RequestParam roleLevel: Long?): ResponseEntity<List<UserResponse>> {
+    fun findAll(@RequestParam dir: String = "ASC", @RequestParam roleLevel: Long?): ResponseEntity<List<EmployeeResponse>> {
         val sortDir = SortDir.findOrNull(dir) ?: return ResponseEntity.badRequest().build()
 
-        return userService.findAll(sortDir, roleLevel)
-            .map { UserResponse(it) }
+        return employeeService.findAll(sortDir, roleLevel)
+            .map { EmployeeResponse(it) }
             .let { ResponseEntity.ok(it) }
     }
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long) =
-        userService.findByIdOrNull(id)
-            ?.let { UserResponse(it) }
+        employeeService.findByIdOrNull(id)
+            ?.let { EmployeeResponse(it) }
             ?.let { ResponseEntity.ok(it) }
             ?: ResponseEntity.notFound().build()
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> =
-        userService.delete(id)
+        employeeService.delete(id)
             .let { ResponseEntity.ok().build() }
 
     @PutMapping("/{id}/role-level/{roleLevelId}")
     fun grant(@PathVariable id: Long, @PathVariable roleLevelId: Long): ResponseEntity<Void> =
-        if (userService.addRoleLevel(id, roleLevelId)) ResponseEntity.ok().build()
+        if (employeeService.addRoleLevel(id, roleLevelId)) ResponseEntity.ok().build()
         else ResponseEntity.noContent().build()
 }

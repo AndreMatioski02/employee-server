@@ -1,4 +1,4 @@
-package br.pucpr.authserver.users
+package br.pucpr.authserver.employee
 
 import br.pucpr.authserver.exception.NotFoundException
 import br.pucpr.authserver.rolesLevels.RoleLevelService
@@ -7,25 +7,25 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(
-    val userRepository: UserRepository,
+class EmployeeService(
+    val employeeRepository: EmployeeRepository,
     val roleLevelService: RoleLevelService,
 ) {
-    fun insert(user: User): User = userRepository.save(user)
+    fun insert(employee: Employee): Employee = employeeRepository.save(employee)
 
-    fun findAll(dir: SortDir, roleLevel: Long?): List<User> {
+    fun findAll(dir: SortDir, roleLevel: Long?): List<Employee> {
         if(roleLevel != null) {
-            return userRepository.findByRoleLevel(roleLevel)
+            return employeeRepository.findByRoleLevel(roleLevel)
         }
         return when(dir) {
-            SortDir.ASC -> userRepository.findAll(Sort.by("name"))
-            SortDir.DESC -> userRepository.findAll(Sort.by("name").descending())
+            SortDir.ASC -> employeeRepository.findAll(Sort.by("name"))
+            SortDir.DESC -> employeeRepository.findAll(Sort.by("name").descending())
         }
     }
 
-    fun findByIdOrNull(id: Long): User? = userRepository.findByIdOrNull(id)
+    fun findByIdOrNull(id: Long): Employee? = employeeRepository.findByIdOrNull(id)
 
-    fun delete(id: Long): Unit = userRepository.deleteById(id)
+    fun delete(id: Long): Unit = employeeRepository.deleteById(id)
 
     fun addRoleLevel(id: Long, roleLevelId: Long): Boolean {
         val user = findByIdOrNull(id) ?: throw NotFoundException("User $id not found")
@@ -33,7 +33,7 @@ class UserService(
         val roleLevel = roleLevelService.findByNameOrNull(roleLevelId) ?: throw NotFoundException("Role $roleLevelId not found")
 
         user.roleLevel = roleLevel
-        userRepository.save(user)
+        employeeRepository.save(user)
         return true
     }
 }

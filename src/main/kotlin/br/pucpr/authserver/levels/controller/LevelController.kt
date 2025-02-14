@@ -4,8 +4,6 @@ import br.pucpr.authserver.levels.Level
 import br.pucpr.authserver.levels.LevelService
 import br.pucpr.authserver.levels.controller.requests.CreateLevelRequest
 import br.pucpr.authserver.levels.controller.responses.LevelResponse
-import br.pucpr.authserver.users.controller.requests.CreateUserRequest
-import br.pucpr.authserver.users.controller.responses.UserResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
