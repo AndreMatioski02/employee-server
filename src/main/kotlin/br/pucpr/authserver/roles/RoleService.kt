@@ -10,19 +10,18 @@ import org.springframework.stereotype.Service
 
 @Service
 class RoleService(val roleRepository: RoleRepository, val levelService: LevelService, val roleLevelService: RoleLevelService) {
-    fun save(role: Role): Role = roleRepository.save(role)
+    fun insert(role: Role): Role = roleRepository.save(role)
 
     fun findAll(): MutableList<Role> = roleRepository.findAll(Sort.by("name"))
 
-    fun findByNameOrNull(name: String): Role? = roleRepository.findByIdOrNull(name)
+    fun findByNameOrNull(id: Long): Role? = roleRepository.findByIdOrNull(id)
 
-    fun addLevel(roleName: String, levelId: Long): Boolean {
-        val roleUpper = roleName.uppercase()
-        val role = findByNameOrNull(roleName.uppercase()) ?: throw NotFoundException("Role $roleUpper not found")
+    fun addLevel(roleId: Long, levelId: Long): Boolean {
+        val role = findByNameOrNull(roleId) ?: throw NotFoundException("Role $roleId not found")
 
         val level = levelService.findByIdOrNull(levelId) ?: throw NotFoundException("Level $levelId not found")
 
-        val roleLevel = RoleLevel(role = role, level = level,)
+        val roleLevel = RoleLevel(role = role, level = level)
 
         roleLevelService.save(roleLevel)
         roleRepository.save(role)

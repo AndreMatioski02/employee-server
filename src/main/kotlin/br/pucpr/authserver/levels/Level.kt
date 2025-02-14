@@ -1,6 +1,5 @@
 package br.pucpr.authserver.levels
 
-import br.pucpr.authserver.rolesLevels.RoleLevel
 import jakarta.persistence.*
 
 @Entity

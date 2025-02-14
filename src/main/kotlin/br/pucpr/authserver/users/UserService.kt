@@ -1,8 +1,7 @@
 package br.pucpr.authserver.users
 
 import br.pucpr.authserver.exception.NotFoundException
-import br.pucpr.authserver.roles.RoleRepository
-import br.pucpr.authserver.roles.RoleService
+import br.pucpr.authserver.rolesLevels.RoleLevelService
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -10,13 +9,13 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     val userRepository: UserRepository,
-    val roleService: RoleService,
+    val roleLevelService: RoleLevelService,
 ) {
     fun insert(user: User): User = userRepository.save(user)
 
-    fun findAll(dir: SortDir, role: String?): List<User> {
-        if(!role.isNullOrBlank()) {
-            return userRepository.findByRole(role)
+    fun findAll(dir: SortDir, roleLevel: Long?): List<User> {
+        if(roleLevel != null) {
+            return userRepository.findByRoleLevel(roleLevel)
         }
         return when(dir) {
             SortDir.ASC -> userRepository.findAll(Sort.by("name"))
@@ -28,16 +27,12 @@ class UserService(
 
     fun delete(id: Long): Unit = userRepository.deleteById(id)
 
-    fun addRole(id: Long, roleName: String): Boolean {
+    fun addRoleLevel(id: Long, roleLevelId: Long): Boolean {
         val user = findByIdOrNull(id) ?: throw NotFoundException("User $id not found")
 
-        val roleUpper = roleName.uppercase()
+        val roleLevel = roleLevelService.findByNameOrNull(roleLevelId) ?: throw NotFoundException("Role $roleLevelId not found")
 
-        if(user.roles.any { it.name == roleUpper }) return false
-
-        val role = roleService.findByNameOrNull(roleName.uppercase()) ?: throw NotFoundException("Role $roleUpper not found")
-
-        user.roles.add(role)
+        user.roleLevel = roleLevel
         userRepository.save(user)
         return true
     }

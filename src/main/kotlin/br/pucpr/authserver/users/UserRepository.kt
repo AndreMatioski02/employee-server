@@ -8,8 +8,8 @@ interface UserRepository: JpaRepository<User, Long> {
 
     @Query(
         "select distinct u from User u " +
-                "join u.roles r " +
-                "where r.name = :role",
+                "join u.roleLevel r " +
+                "where r.id = :roleLevel",
     )
-    fun findByRole(role: String): List<User>
+    fun findByRoleLevel(roleLevel: Long): List<User>
 }

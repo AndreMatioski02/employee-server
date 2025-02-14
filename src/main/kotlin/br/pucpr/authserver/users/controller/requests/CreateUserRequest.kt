@@ -1,5 +1,6 @@
 package br.pucpr.authserver.users.controller.requests
 
+import br.pucpr.authserver.rolesLevels.RoleLevel
 import br.pucpr.authserver.users.User
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank

@@ -6,7 +6,7 @@ import jakarta.persistence.*
 
 @Entity
 class RoleLevel(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     var id: Long? = null,
 
     @ManyToOne

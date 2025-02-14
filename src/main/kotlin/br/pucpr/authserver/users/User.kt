@@ -1,6 +1,7 @@
 package br.pucpr.authserver.users
 
 import br.pucpr.authserver.roles.Role
+import br.pucpr.authserver.rolesLevels.RoleLevel
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 
@@ -19,12 +20,7 @@ class User(
     @Column(unique = true, nullable = false)
     var email: String,
 
-    @ManyToMany
-    @JoinTable(
-        name="userRoles",
-        joinColumns = [JoinColumn(name = "idUser")],
-        inverseJoinColumns = [JoinColumn(name="idRole")]
-    )
-    val roles: MutableSet<Role> = mutableSetOf(),
+    @OneToOne
+    var roleLevel: RoleLevel? = null
 )
 

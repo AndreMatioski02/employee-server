@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*
 class UserController(
     val userService: UserService
 ) {
-    @GetMapping("/check")
-    fun ping() = "Pong"
-
     @PostMapping
     fun insert(@RequestBody @Valid user: CreateUserRequest) =
         userService.insert(user.toUser())
@@ -24,10 +21,10 @@ class UserController(
             .let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
 
     @GetMapping
-    fun findAll(@RequestParam dir: String = "ASC", @RequestParam role: String?): ResponseEntity<List<UserResponse>> {
+    fun findAll(@RequestParam dir: String = "ASC", @RequestParam roleLevel: Long?): ResponseEntity<List<UserResponse>> {
         val sortDir = SortDir.findOrNull(dir) ?: return ResponseEntity.badRequest().build()
 
-        return userService.findAll(sortDir, role)
+        return userService.findAll(sortDir, roleLevel)
             .map { UserResponse(it) }
             .let { ResponseEntity.ok(it) }
     }
@@ -44,8 +41,8 @@ class UserController(
         userService.delete(id)
             .let { ResponseEntity.ok().build() }
 
-    @PutMapping("/{id}/roles/{role}")
-    fun grant(@PathVariable id: Long, @PathVariable role: String): ResponseEntity<Void> =
-        if (userService.addRole(id, role)) ResponseEntity.ok().build()
+    @PutMapping("/{id}/role-level/{roleLevelId}")
+    fun grant(@PathVariable id: Long, @PathVariable roleLevelId: Long): ResponseEntity<Void> =
+        if (userService.addRoleLevel(id, roleLevelId)) ResponseEntity.ok().build()
         else ResponseEntity.noContent().build()
 }
