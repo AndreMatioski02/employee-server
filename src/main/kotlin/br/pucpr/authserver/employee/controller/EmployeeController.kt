@@ -42,7 +42,12 @@ class EmployeeController(
             .let { ResponseEntity.ok().build() }
 
     @PutMapping("/{id}/role-level/{roleLevelId}")
-    fun grant(@PathVariable id: Long, @PathVariable roleLevelId: Long): ResponseEntity<Void> =
+    fun grantRoleLevel(@PathVariable id: Long, @PathVariable roleLevelId: Long): ResponseEntity<Void> =
         if (employeeService.addRoleLevel(id, roleLevelId)) ResponseEntity.ok().build()
+        else ResponseEntity.noContent().build()
+
+    @PutMapping("/{id}/pay-stub/{payStubId}")
+    fun grantPayStub(@PathVariable id: Long, @PathVariable payStubId: Long): ResponseEntity<Void> =
+        if (employeeService.addPayStub(id, payStubId)) ResponseEntity.ok().build()
         else ResponseEntity.noContent().build()
 }

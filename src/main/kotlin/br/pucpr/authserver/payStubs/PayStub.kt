@@ -14,7 +14,7 @@ class PayStub(
     @Column(name = "pay_month")
     @Min(1)
     @Max(12)
-    var payMonth: Int,
+    var month: Int,
 
     @Column(name = "pay_year")
     @Min(1900)

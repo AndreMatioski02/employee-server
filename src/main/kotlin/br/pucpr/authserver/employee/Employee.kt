@@ -1,5 +1,6 @@
 package br.pucpr.authserver.employee
 
+import br.pucpr.authserver.payStubs.PayStub
 import br.pucpr.authserver.roleLevels.RoleLevel
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
@@ -19,6 +20,9 @@ class Employee(
     var email: String,
 
     @ManyToOne
-    var roleLevel: RoleLevel? = null
+    var roleLevel: RoleLevel? = null,
+
+    @OneToMany
+    val payStubs: MutableSet<PayStub> = mutableSetOf()
 )
 

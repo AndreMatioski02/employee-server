@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Positive
 data class CreatePayStubRequest (
     @field:Min(1)
     @field:Max(12)
-    val payMonth: Int,
+    val month: Int,
 
     @field:Min(1900)
     val year: Int,
@@ -17,7 +17,7 @@ data class CreatePayStubRequest (
     val salary: Double,
 ) {
     fun toPayStub() = PayStub(
-        payMonth = payMonth,
+        month = month,
         year = year,
         salary = salary
     )

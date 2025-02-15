@@ -1,6 +1,7 @@
 package br.pucpr.authserver.employee
 
 import br.pucpr.authserver.exception.NotFoundException
+import br.pucpr.authserver.payStubs.PayStubService
 import br.pucpr.authserver.roleLevels.RoleLevelService
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service
 class EmployeeService(
     val employeeRepository: EmployeeRepository,
     val roleLevelService: RoleLevelService,
+    val payStubService: PayStubService,
 ) {
     fun insert(employee: Employee): Employee = employeeRepository.save(employee)
 
@@ -33,6 +35,16 @@ class EmployeeService(
         val roleLevel = roleLevelService.findByNameOrNull(roleLevelId) ?: throw NotFoundException("Role $roleLevelId not found")
 
         user.roleLevel = roleLevel
+        employeeRepository.save(user)
+        return true
+    }
+
+    fun addPayStub(id: Long, payStubId: Long): Boolean {
+        val user = findByIdOrNull(id) ?: throw NotFoundException("User $id not found")
+
+        val payStub = payStubService.findByIdOrNull(payStubId) ?: throw NotFoundException("Role $payStubId not found")
+
+        user.payStubs.add(payStub)
         employeeRepository.save(user)
         return true
     }
