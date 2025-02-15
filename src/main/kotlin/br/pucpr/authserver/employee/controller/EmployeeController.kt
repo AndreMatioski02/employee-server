@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/employee")
-class UserController(
+class EmployeeController(
     val employeeService: EmployeeService
 ) {
     @PostMapping
-    fun insert(@RequestBody @Valid user: CreateEmployeeRequest) =
-        employeeService.insert(user.toUser())
+    fun insert(@RequestBody @Valid employee: CreateEmployeeRequest) =
+        employeeService.insert(employee.toEmployee())
             .let { EmployeeResponse(it) }
             .let { ResponseEntity.status(HttpStatus.CREATED).body(it) }
 

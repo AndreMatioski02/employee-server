@@ -16,7 +16,7 @@ data class CreateEmployeeRequest(
     @field:NotBlank
     val name: String,
 ) {
-    fun toUser() = Employee(
+    fun toEmployee() = Employee(
         email = email!!, password = password, name = name
     )
 }
