@@ -24,5 +24,7 @@ class Employee(
 
     @OneToMany
     val payStubs: MutableSet<PayStub> = mutableSetOf()
-)
+) {
+    constructor() : this(null, "", "", "", null)
+}
 
