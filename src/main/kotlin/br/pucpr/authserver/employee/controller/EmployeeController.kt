@@ -3,10 +3,15 @@ package br.pucpr.authserver.employee.controller
 import br.pucpr.authserver.employee.SortDir
 import br.pucpr.authserver.employee.EmployeeService
 import br.pucpr.authserver.employee.controller.requests.CreateEmployeeRequest
+import br.pucpr.authserver.employee.controller.requests.LoginRequest
 import br.pucpr.authserver.employee.controller.responses.EmployeeResponse
+import br.pucpr.authserver.security.UserToken
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -37,17 +42,46 @@ class EmployeeController(
             ?: ResponseEntity.notFound().build()
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<Void> =
-        employeeService.delete(id)
-            .let { ResponseEntity.ok().build() }
+    @SecurityRequirement(name = "AuthServer")
+    fun delete(@PathVariable id: String, auth: Authentication): ResponseEntity<Void> {
+        val user = auth.principal as UserToken
 
+        return if(user.isRH && user.id.toInt() == 1) {
+            employeeService.delete(id.toLong())
+                .let { ResponseEntity.ok().build() }
+        } else {
+            ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+        }
+    }
+
+    @SecurityRequirement(name = "AuthServer")
     @PutMapping("/{id}/role-level/{roleLevelId}")
-    fun grantRoleLevel(@PathVariable id: Long, @PathVariable roleLevelId: Long): ResponseEntity<Void> =
-        if (employeeService.addRoleLevel(id, roleLevelId)) ResponseEntity.ok().build()
-        else ResponseEntity.noContent().build()
+    fun grantRoleLevel(@PathVariable id: Long, @PathVariable roleLevelId: Long, auth: Authentication): ResponseEntity<Void> {
+        val user = auth.principal as UserToken
 
+        return if(user.isRH && user.id.toInt() == 1) {
+            employeeService.addRoleLevel(id, roleLevelId)
+                .let { ResponseEntity.ok().build() }
+        } else {
+            ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+        }
+    }
+
+    @SecurityRequirement(name = "AuthServer")
     @PutMapping("/{id}/pay-stub/{payStubId}")
-    fun grantPayStub(@PathVariable id: Long, @PathVariable payStubId: Long): ResponseEntity<Void> =
-        if (employeeService.addPayStub(id, payStubId)) ResponseEntity.ok().build()
-        else ResponseEntity.noContent().build()
+    fun grantPayStub(@PathVariable id: Long, @PathVariable payStubId: Long, auth: Authentication): ResponseEntity<Void> {
+        val user = auth.principal as UserToken
+
+        return if(user.isRH && user.id.toInt() == 1) {
+            employeeService.addPayStub(id, payStubId)
+                .let { ResponseEntity.ok().build() }
+        } else {
+            ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+        }
+    }
+
+    @PostMapping("/login")
+    fun login(@Valid @RequestBody employee: LoginRequest) = employeeService.login(employee.email!!, employee.password!!)
+        ?.let { ResponseEntity.ok().body(it) }
+        ?: ResponseEntity.notFound().build()
 }

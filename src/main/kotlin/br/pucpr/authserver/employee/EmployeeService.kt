@@ -1,8 +1,12 @@
 package br.pucpr.authserver.employee
 
+import br.pucpr.authserver.employee.controller.responses.EmployeeResponse
+import br.pucpr.authserver.employee.controller.responses.LoginResponse
 import br.pucpr.authserver.exception.NotFoundException
 import br.pucpr.authserver.payStubs.PayStubService
 import br.pucpr.authserver.roleLevels.RoleLevelService
+import br.pucpr.authserver.security.JWT
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -12,6 +16,7 @@ class EmployeeService(
     val employeeRepository: EmployeeRepository,
     val roleLevelService: RoleLevelService,
     val payStubService: PayStubService,
+    private val jwt: JWT
 ) {
     fun insert(employee: Employee): Employee = employeeRepository.save(employee)
 
@@ -47,5 +52,21 @@ class EmployeeService(
         user.payStubs.add(payStub)
         employeeRepository.save(user)
         return true
+    }
+
+
+    fun login(email: String, password: String): LoginResponse? {
+        val employee = employeeRepository.findByEmail(email) ?: return null
+        if(employee.password != password) return  null
+        log.info("Employee logged")
+
+        return LoginResponse(
+            token = jwt.createToken(employee),
+            employee = EmployeeResponse(employee)
+        )
+    }
+
+    companion object {
+        val log = LoggerFactory.getLogger(JWT::class.java)
     }
 }

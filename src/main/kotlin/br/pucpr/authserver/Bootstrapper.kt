@@ -21,9 +21,14 @@ class Bootstrapper(
     private val employeeRepository: EmployeeRepository,
 ): ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        val role = Role(
+        val rhRole = Role(
+            name = "RH",
+            description = "Recurso humano"
+        )
+
+        val devRole = Role(
             name = "Desenvolvedor",
-            description = "Front-end"
+            description = "Front-end dev"
         )
 
         val level = Level(
@@ -31,13 +36,22 @@ class Bootstrapper(
             description = "Large Experience"
         )
 
-        val roleLevel = RoleLevel(
-            role = role,
+        val rhRoleLevel = RoleLevel(
+            role = rhRole,
+            level = level
+        )
+
+        val devRoleLevel = RoleLevel(
+            role = devRole,
             level = level
         )
 
         if(rolesRepository.findByIdOrNull(1) == null) {
-            rolesRepository.save(role)
+            rolesRepository.save(rhRole)
+        }
+
+        if(rolesRepository.findByIdOrNull(2) == null) {
+            rolesRepository.save(devRole)
         }
 
         if(levelRepository.findByIdOrNull(1) == null) {
@@ -45,18 +59,34 @@ class Bootstrapper(
         }
 
         if(roleLevelRepository.findByIdOrNull(1) == null) {
-            roleLevelRepository.save(roleLevel)
+            roleLevelRepository.save(rhRoleLevel)
+        }
+
+        if(roleLevelRepository.findByIdOrNull(2) == null) {
+            roleLevelRepository.save(devRoleLevel)
         }
 
         if(employeeRepository.findByRoleLevel(1).isEmpty()) {
-            val admin = Employee(
-                email="andre@email.com",
-                password = "admin",
-                name = "André Matioski",
-                roleLevel = roleLevel
+            val rh = Employee(
+                email="helena@email.com",
+                password = "rh",
+                name = "Helena Matioski",
+                roleLevel = rhRoleLevel
             )
 
-            employeeRepository.save(admin)
+            employeeRepository.save(rh)
         }
+
+        if(employeeRepository.findByRoleLevel(2).isEmpty()) {
+            val dev = Employee(
+                email="andre@email.com",
+                password = "dev",
+                name = "André Matioski",
+                roleLevel = devRoleLevel
+            )
+
+            employeeRepository.save(dev)
+        }
+
     }
 }

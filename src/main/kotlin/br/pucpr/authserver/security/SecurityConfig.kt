@@ -44,8 +44,8 @@ class SecurityConfig(private val jwtTokenFilter: JwtTokenFilter) {
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(antMatcher(HttpMethod.GET)).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/users")).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/users/login")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/employee")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/employee/login")).permitAll()
                     .requestMatchers(antMatcher("h2-console/**")).permitAll()
                     .anyRequest().authenticated()
             }

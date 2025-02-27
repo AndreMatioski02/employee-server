@@ -17,5 +17,5 @@ data class UserToken(
     )
 
     @get:JsonIgnore
-    val isAdmin: Boolean get() = roleLevel?.id?.toInt() == 1
+    val isRH: Boolean get() = roleLevel?.id?.toInt() == 1
 }

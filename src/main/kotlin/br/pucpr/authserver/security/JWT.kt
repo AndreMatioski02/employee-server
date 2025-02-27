@@ -27,7 +27,7 @@ class JWT(
                 .subject(employee.id.toString())
                 .issuedAt(utcNow().toDate())
                 .expiration(utcNow().plusHours(
-                    if (it.isAdmin) properties.adminExpireHours else properties.expireHours
+                    if (it.isRH) properties.adminExpireHours else properties.expireHours
                 ).toDate())
                 .issuer(properties.issuer)
                 .claim(USER_FIELD, it)
